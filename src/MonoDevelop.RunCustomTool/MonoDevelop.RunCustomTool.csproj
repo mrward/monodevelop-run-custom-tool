@@ -35,6 +35,7 @@
     <Compile Include="Properties\AddinInfo.cs" />
     <Compile Include="MonoDevelop.RunCustomTool\RunAllCustomToolsHandler.cs" />
     <Compile Include="MonoDevelop.RunCustomTool\CustomToolServiceExtensions.cs" />
+    <Compile Include="MonoDevelop.RunCustomTool\RunCustomToolHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\MonoDevelop.RunCustomTool.addin.xml">

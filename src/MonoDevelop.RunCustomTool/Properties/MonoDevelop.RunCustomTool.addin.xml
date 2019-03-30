@@ -8,11 +8,28 @@
 			_label="Run Custom Tools"
 			_description="Run all custom tools."
 			defaultHandler="MonoDevelop.RunCustomTool.RunAllCustomToolsHandler" />
+		<Command id="MonoDevelop.RunCustomTool.Commands.RunCustomTool"
+			_label="Run Custom Tool"
+			_description="Runs custom tool for selected file."
+			defaultHandler="MonoDevelop.RunCustomTool.RunCustomToolHandler" />
 	</Extension>
 
 	<Extension path="/MonoDevelop/Ide/ContextMenu/ProjectPad/Tools">
 		<Condition id="ItemType" value="Solution|Project">
 			<CommandItem id="MonoDevelop.RunCustomTool.Commands.RunAllCustomTools" />
+		</Condition>
+	</Extension>
+
+	<Extension path="/MonoDevelop/Ide/ContextMenu/ProjectPad">
+		<Condition id="ItemType" value="ProjectFile">
+			<CommandItem
+				id="MonoDevelop.RunCustomTool.Commands.RunCustomTool"
+				_label="Run Custom Tool"
+				insertafter="MonoDevelop.Ide.Commands.FileCommands.OpenContainingFolder"
+				insertbefore="ToolsSectionEnd" />
+			<SeparatorItem
+				insertafter="MonoDevelop.Ide.Commands.FileCommands.OpenContainingFolder"
+				insertbefore="MonoDevelop.RunCustomTool.Commands.RunCustomTool" />
 		</Condition>
 	</Extension>
 </ExtensionModel>

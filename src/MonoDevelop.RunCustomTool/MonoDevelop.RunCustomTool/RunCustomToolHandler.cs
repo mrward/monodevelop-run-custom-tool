@@ -1,5 +1,5 @@
 ﻿//
-// RunAllCustomToolsCommandHandler.cs
+// RunCustomToolHandler.cs
 //
 // Author:
 //       Matt Ward <matt.ward@microsoft.com>
@@ -24,42 +24,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MonoDevelop.Components.Commands;
 using MonoDevelop.Ide;
 using MonoDevelop.Projects;
+using MonoDevelop.Ide.CustomTools;
 
 namespace MonoDevelop.RunCustomTool
 {
-	class RunAllCustomToolsHandler : CommandHandler
+	class RunCustomToolHandler : CommandHandler
 	{
+		protected override void Update (CommandInfo info)
+		{
+			var file = IdeApp.ProjectOperations.CurrentSelectedItem as ProjectFile;
+			info.Visible = CustomToolServiceExtensions.ShouldRunCustomTool (file);
+		}
+
 		protected override void Run ()
 		{
-			var files = GetFilesToProcess ().ToList ();
-			CustomToolServiceExtensions.Update (files, true).Ignore ();
-		}
-
-		static IEnumerable<ProjectFile> GetFilesToProcess ()
-		{
-			var item = IdeApp.ProjectOperations.CurrentSelectedItem;
-			if (item is Solution solution) {
-				return GetFilesToProcess (solution);
-			} else if (item is Project project) {
-				return GetFilesToProcess (project);
+			var file = IdeApp.ProjectOperations.CurrentSelectedItem as ProjectFile;
+			if (CustomToolServiceExtensions.ShouldRunCustomTool (file)) {
+				CustomToolService.Update (file, file.Project, true);
 			}
-			return Enumerable.Empty <ProjectFile> ();
-		}
-
-		static IEnumerable<ProjectFile> GetFilesToProcess (Project project)
-		{
-			return project.Files.Where (file => CustomToolServiceExtensions.ShouldRunCustomTool (file));
-		}
-
-		static IEnumerable<ProjectFile> GetFilesToProcess (Solution solution)
-		{
-			return solution.GetAllProjects ().SelectMany (project => GetFilesToProcess (project));
 		}
 	}
 }

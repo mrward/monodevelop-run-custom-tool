@@ -101,5 +101,18 @@ namespace MonoDevelop.RunCustomTool
 			}
 			return Task.CompletedTask;
 		}
+
+		public static bool ShouldRunCustomTool (ProjectFile file)
+		{
+			if (file == null) {
+				return false;
+			}
+
+			if ((file.Flags & ProjectItemFlags.DontPersist) != 0) {
+				return false;
+			}
+
+			return !string.IsNullOrEmpty (file.Generator);
+		}
 	}
 }

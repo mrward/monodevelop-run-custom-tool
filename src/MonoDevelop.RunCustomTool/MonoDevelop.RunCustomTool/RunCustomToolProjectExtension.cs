@@ -1,5 +1,5 @@
 ﻿//
-// RunAllCustomToolsCommandHandler.cs
+// RunCustomToolProjectExtension.cs
 //
 // Author:
 //       Matt Ward <matt.ward@microsoft.com>
@@ -24,32 +24,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MonoDevelop.Components.Commands;
-using MonoDevelop.Ide;
+using System.Threading.Tasks;
+using MonoDevelop.Core;
 using MonoDevelop.Projects;
 
 namespace MonoDevelop.RunCustomTool
 {
-	class RunAllCustomToolsHandler : CommandHandler
+	public class RunCustomToolProjectExtension : ProjectExtension
 	{
-		protected override void Run ()
+		protected override async Task<BuildResult> OnBuild (
+			ProgressMonitor monitor,
+			ConfigurationSelector configuration,
+			OperationContext operationContext)
 		{
-			var files = GetFilesToProcess ().ToList ();
-			CustomToolServiceExtensions.Update (files, true).Ignore ();
-		}
-
-		static IEnumerable<ProjectFile> GetFilesToProcess ()
-		{
-			var item = IdeApp.ProjectOperations.CurrentSelectedItem;
-			if (item is Solution solution) {
-				return CustomToolServiceExtensions.GetFilesToProcess (solution);
-			} else if (item is Project project) {
-				return CustomToolServiceExtensions.GetFilesToProcess (project);
-			}
-			return Enumerable.Empty <ProjectFile> ();
+			await CustomToolServiceExtensions.RunCustomToolsBeforeBuild (Project);
+			return await base.OnBuild (monitor, configuration, operationContext);
 		}
 	}
 }

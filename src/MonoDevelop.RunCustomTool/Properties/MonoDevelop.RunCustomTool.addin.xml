@@ -32,4 +32,9 @@
 				insertbefore="MonoDevelop.RunCustomTool.Commands.RunCustomTool" />
 		</Condition>
 	</Extension>
+
+	<Extension path="/MonoDevelop/ProjectModel/ProjectModelExtensions">
+		<Class class="MonoDevelop.RunCustomTool.RunCustomToolProjectExtension" />
+		<Class class="MonoDevelop.RunCustomTool.RunCustomToolSolutionExtension" />
+	</Extension>
 </ExtensionModel>

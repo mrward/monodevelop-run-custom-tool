@@ -45,7 +45,20 @@ namespace MonoDevelop.RunCustomTool
 
 		static CustomToolServiceExtensions ()
 		{
+			RunCustomToolOnBuildEnabled = ConfigurationProperty.Create<bool> ("RunCustomTool.RunCustomToolOnBuildEnabled", true);
 			updateMethod = FindUpdateMethod ();
+		}
+
+		public static ConfigurationProperty<bool> RunCustomToolOnBuildEnabled { get; private set; }
+
+		public static IEnumerable<ProjectFile> GetFilesToProcess (Solution solution)
+		{
+			return solution.GetAllProjects ().SelectMany (project => GetFilesToProcess (project));
+		}
+
+		public static IEnumerable<ProjectFile> GetFilesToProcess (Project project)
+		{
+			return project.Files.Where (file => ShouldRunCustomTool (file));
 		}
 
 		public static async Task Update (IEnumerable<ProjectFile> files, bool force = true)
@@ -113,6 +126,34 @@ namespace MonoDevelop.RunCustomTool
 			}
 
 			return !string.IsNullOrEmpty (file.Generator);
+		}
+
+		public static async Task RunCustomToolsBeforeBuild (Project project)
+		{
+			if (!RunCustomToolOnBuildEnabled) {
+				return;
+			}
+
+			var files = GetFilesToProcess (project);
+			if (!files.Any ()) {
+				return;
+			}
+
+			await Update (files, false);
+		}
+
+		public static async Task RunCustomToolsBeforeBuild (Solution solution)
+		{
+			if (!RunCustomToolOnBuildEnabled) {
+				return;
+			}
+
+			var files = GetFilesToProcess (solution);
+			if (!files.Any ()) {
+				return;
+			}
+
+			await Update (files, false);
 		}
 	}
 }

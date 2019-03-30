@@ -37,4 +37,10 @@
 		<Class class="MonoDevelop.RunCustomTool.RunCustomToolProjectExtension" />
 		<Class class="MonoDevelop.RunCustomTool.RunCustomToolSolutionExtension" />
 	</Extension>
+
+	<Extension path="/MonoDevelop/Ide/GlobalOptionsDialog">
+		<Section id="MonoDevelop.RunCustomTool" _label="Run Custom Tool" insertafter="VersionControl">
+			<Section id="General" _label="General" fill="true" class="MonoDevelop.RunCustomTool.RunCustomToolOptionsPanel" />
+		</Section>
+	</Extension>
 </ExtensionModel>

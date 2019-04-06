@@ -35,6 +35,6 @@ using Mono.Addins;
 [assembly:AddinName ("Run Custom Tool")]
 [assembly:AddinDescription ("Adds a way to run custom tools for the project")]
 
-[assembly:AddinDependency ("Core", "7.0")]
-[assembly:AddinDependency ("Ide", "7.0")]
+[assembly:AddinDependency ("Core", "8.0")]
+[assembly:AddinDependency ("Ide", "8.0")]
 

@@ -29,7 +29,7 @@ using Mono.Addins;
 [assembly:Addin (
 	"RunCustomTool",
 	Namespace="MonoDevelop",
-	Version="0.1",
+	Version="0.1.1",
 	Category="IDE extensions")]
 
 [assembly:AddinName ("Run Custom Tool")]
